@@ -32,3 +32,13 @@ jobs:
       - run: pnpm test:font
       - run: pnpm --dir website exec playwright install --with-deps chromium
       - run: pnpm test:website
+      - name: Preserve failed build diagnostics
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: build-diagnostics
+          path: |
+            font/dist/
+            font/reports/
+            website/test-results/
+          retention-days: 7
