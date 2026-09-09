@@ -1,9 +1,26 @@
 import { test, expect } from "@playwright/test";
+import manifest from "../src/font-manifest.json" with { type: "json" };
 
 test("all 18 native styles load, with zero tracking and working decorations", async ({
   page,
 }) => {
   await page.goto("/#playground");
+  for (const selector of [
+    'link[href*="satoma-sans.css"]',
+    'link[rel="preload"][as="font"]',
+    'a[href*="satoma-sans-family.zip"]',
+  ]) {
+    const links = page.locator(selector);
+    expect(await links.count()).toBeGreaterThan(0);
+    for (const link of await links.all()) {
+      expect(
+        new URL(
+          (await link.getAttribute("href"))!,
+          page.url(),
+        ).searchParams.get("v"),
+      ).toBe(manifest.version);
+    }
+  }
   const text = page.locator("#tester-text");
   await expect(page.locator("#tester-weight option")).toHaveCount(9);
   for (const style of ["normal", "italic"]) {

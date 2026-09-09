@@ -31,7 +31,9 @@ jobs:
         run: git diff --exit-code -- font/dist
       - run: pnpm test:font
       - run: pnpm --dir website exec playwright install --with-deps chromium
-      - run: pnpm test:website
+      - name: Install software WebGPU display dependencies
+        run: sudo apt-get install -y libvulkan1 mesa-vulkan-drivers xvfb xauth
+      - run: xvfb-run -a pnpm test:website
       - name: Preserve failed build diagnostics
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
