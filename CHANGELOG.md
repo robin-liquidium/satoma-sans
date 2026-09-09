@@ -7,7 +7,9 @@
 - Complete upstream and Satoma copyright/license metadata, authors, and usage documentation.
 - Reproducible release ZIP and a shared font build for the website.
 - Official specimen site at satoma.robin.build, linked to GitHub and robin.build.
-- Font outlines, spacing, kerning, weights, and italics unchanged from 0.301.
+- Spacing, kerning, weights, and italic designs unchanged from 0.301. Normalized
+  floating-point shear rounding across macOS/Linux; this moves one Black Italic
+  ellipsis outline point by one font unit. All other outlines are unchanged.
 
 ## 0.301 — 2026-09-07
 
