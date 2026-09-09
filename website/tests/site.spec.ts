@@ -129,7 +129,20 @@ test("glass follows mouse movement and resets with reduced motion enabled", asyn
   });
   // Let the deliberate eased response settle; no mouse button is ever pressed.
   await page.waitForTimeout(1800);
-  const rotatedImage = PNG.sync.read(await canvas.screenshot());
+  let rotatedImage = PNG.sync.read(await canvas.screenshot());
+  // Software WebGPU may need more wall time for the same eased frames.
+  // Require actual pixel stability instead of assuming hardware throughput.
+  await expect
+    .poll(
+      async () => {
+        const next = PNG.sync.read(await canvas.screenshot());
+        const stable = next.data.equals(rotatedImage.data);
+        rotatedImage = next;
+        return stable;
+      },
+      { timeout: 30000, intervals: [500, 1000] },
+    )
+    .toBe(true);
   const rotated = rotatedImage.data;
   const changed = original.filter(
     (v, i) => i % 4 !== 3 && Math.abs(v - rotated[i]) > 30,
@@ -195,9 +208,13 @@ test("glass follows mouse movement and resets with reduced motion enabled", asyn
   }
   expect(upperLightPixels).toBeGreaterThan(100);
   await page.keyboard.press("Home");
-  expect(PNG.sync.read(await canvas.screenshot()).data.equals(original)).toBe(
-    true,
-  );
+  await expect
+    .poll(
+      async () =>
+        PNG.sync.read(await canvas.screenshot()).data.equals(original),
+      { timeout: 15000 },
+    )
+    .toBe(true);
   await page.keyboard.press("ArrowRight");
   await page.waitForTimeout(1800);
   expect(PNG.sync.read(await canvas.screenshot()).data.equals(original)).toBe(
@@ -256,49 +273,55 @@ test("without WebGPU the typeface and static sculpture still work", async ({
   await expect(page.locator("#tester-text")).toHaveValue("Still sharp.");
 });
 
-test("mouse interaction renders at browser cadence instead of a 30 fps cap", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await expect(page.locator(".sculpture-stage")).toHaveClass(/ready/);
-  await page.locator("#sculpture").scrollIntoViewIfNeeded();
-  const cadence = await page.evaluate(async () => {
-    const stage = document.querySelector(".sculpture-stage")!;
-    const box = stage.getBoundingClientRect();
-    // Count actual GPU submissions, grouping multiple passes in one frame.
-    const queue = (globalThis as any).GPUQueue.prototype;
-    const submit = queue.submit;
-    const times: number[] = [];
-    queue.submit = function (...args: unknown[]) {
-      const now = performance.now();
-      if (!times.length || now - times[times.length - 1] > 2) times.push(now);
-      return submit.apply(this, args);
-    };
-    let frames = 0;
-    try {
-      await new Promise<void>((resolve) => {
-        const start = performance.now();
-        const step = (now: number) => {
-          frames++;
-          stage.dispatchEvent(
-            new PointerEvent("pointermove", {
-              bubbles: true,
-              pointerType: "mouse",
-              clientX:
-                box.x + box.width * (0.5 + Math.sin((now - start) / 500) * 0.2),
-              clientY: box.y + box.height / 2,
-            }),
-          );
-          if (now - start < 1500) requestAnimationFrame(step);
-          else resolve();
-        };
-        requestAnimationFrame(step);
-      });
-    } finally {
-      queue.submit = submit;
-    }
-    return { frames, renders: times.length };
+test.describe("frame scheduling", () => {
+  // Keep this CPU/animation-policy check independent of raster throughput.
+  // Full-size visual correctness is covered by the sculpture tests above.
+  test.use({ viewport: { width: 480, height: 320 }, deviceScaleFactor: 0.5 });
+  test("mouse interaction renders at browser cadence instead of a 30 fps cap", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator(".sculpture-stage")).toHaveClass(/ready/);
+    await page.locator("#sculpture").scrollIntoViewIfNeeded();
+    const cadence = await page.evaluate(async () => {
+      const stage = document.querySelector(".sculpture-stage")!;
+      const box = stage.getBoundingClientRect();
+      // Count actual GPU submissions, grouping multiple passes in one frame.
+      const queue = (globalThis as any).GPUQueue.prototype;
+      const submit = queue.submit;
+      const times: number[] = [];
+      queue.submit = function (...args: unknown[]) {
+        const now = performance.now();
+        if (!times.length || now - times[times.length - 1] > 2) times.push(now);
+        return submit.apply(this, args);
+      };
+      let frames = 0;
+      try {
+        await new Promise<void>((resolve) => {
+          const start = performance.now();
+          const step = (now: number) => {
+            frames++;
+            stage.dispatchEvent(
+              new PointerEvent("pointermove", {
+                bubbles: true,
+                pointerType: "mouse",
+                clientX:
+                  box.x +
+                  box.width * (0.5 + Math.sin((now - start) / 500) * 0.2),
+                clientY: box.y + box.height / 2,
+              }),
+            );
+            if (now - start < 1500) requestAnimationFrame(step);
+            else resolve();
+          };
+          requestAnimationFrame(step);
+        });
+      } finally {
+        queue.submit = submit;
+      }
+      return { frames, renders: times.length };
+    });
+    expect(cadence.frames).toBeGreaterThan(15);
+    expect(cadence.renders / cadence.frames).toBeGreaterThan(0.8);
   });
-  expect(cadence.frames).toBeGreaterThan(15);
-  expect(cadence.renders / cadence.frames).toBeGreaterThan(0.8);
 });
