@@ -1,0 +1,36 @@
+name: Release font
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version-file: .python-version
+      - name: Install and build fonts
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r font/requirements.txt
+          .venv/bin/python font/scripts/generate_satoma.py
+          .venv/bin/python font/scripts/validate_release.py
+          .venv/bin/python font/scripts/audit_satoma_family.py
+          git diff --exit-code -- font/dist
+      - name: Verify tag matches the font version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          .venv/bin/python -c 'import json, os; m=json.load(open("font/dist/satoma-sans-manifest.json")); assert os.environ["RELEASE_TAG"] == "v" + m["version"] + ".0"'
+      - name: Publish versioned download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" font/dist/satoma-sans-family.zip font/dist/SHA256SUMS.txt --verify-tag --title "Satoma Sans $RELEASE_TAG" --notes-file CHANGELOG.md

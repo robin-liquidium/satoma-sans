@@ -1,0 +1,6 @@
+fonttools==4.60.2
+brotli==1.2.0
+zopfli==0.2.3.post1
+numpy==2.0.2
+pillow==11.3.0
+uharfbuzz==0.51.7

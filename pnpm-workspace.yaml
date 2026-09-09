@@ -1,0 +1,7 @@
+packages:
+  - website
+allowBuilds:
+  '@vgpu/adapter-node': true
+  webgpu: true
+  esbuild: true
+  workerd: true

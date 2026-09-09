@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "satoma-sans",
+  "account_id": "81b27ab7c6fe3a3b3a0e6d31f7d2a381",
+  "compatibility_date": "2026-09-09",
+  "routes": [{ "pattern": "satoma.robin.build", "custom_domain": true }],
+  "workers_dev": true,
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+}

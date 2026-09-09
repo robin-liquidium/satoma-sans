@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Satoma Sans. Nine weights, real italics, and tabular numbers. Explore all 18 styles and download the open-source font family."
+    />
+    <title>Satoma Sans — A softer kind of sharp.</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://satoma.robin.build/" />
+    <meta property="og:title" content="Satoma Sans — A softer kind of sharp." />
+    <meta
+      property="og:description"
+      content="An open-source geometric font by Robin Obermaier, based on Albert Sans. 18 styles. Free for personal and commercial projects."
+    />
+    <meta property="og:url" content="https://satoma.robin.build/" />
+    <link rel="stylesheet" href="/fonts/satoma-sans.css?v=0.302" />
+    <link
+      rel="preload"
+      href="/fonts/satoma-sans-400.woff2?v=0.302"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/satoma-sans-700.woff2?v=0.302"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#playground">Skip to font playground</a>
+    <header class="nav wrap">
+      <a class="brand" href="#top" aria-label="Satoma Sans home"
+        ><span class="brand-mark">S</span
+        ><span
+          >Satoma Sans<span class="brand-caption">Independent type</span></span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#typeface">Typeface</a><a href="#playground">Playground</a
+        ><a href="#characters">Characters</a>
+      </nav>
+      <a class="nav-download" href="#download"
+        >Get the font <span aria-hidden="true">↗</span></a
+      >
+    </header>
+    <main>
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-topline wrap">
+          <span
+            ><i class="status-dot"></i> A new perspective on geometric
+            type</span
+          ><span class="meta">Thin → Black / 2026</span>
+        </div>
+        <h1 id="hero-title">Satoma<span class="sans-label">Sans</span></h1>
+        <div class="sculpture-stage">
+          <div class="stage-line" aria-hidden="true"></div>
+          <div class="sculpture-fallback" aria-hidden="true">S</div>
+          <canvas
+            id="sculpture"
+            aria-label="Interactive refractive glass sculpture of Satoma's capital S"
+          ></canvas>
+          <div class="stage-caption caption-left">
+            <span class="micro">Form / 001</span>
+            <p>A softer<br />kind of sharp.</p>
+          </div>
+          <div class="stage-caption caption-right">
+            <p>Precise by nature.<br />Distinct by design.</p>
+            <span class="micro interaction-hint"
+              >Move your mouse. Follow the light.</span
+            >
+          </div>
+        </div>
+        <div class="hero-bottom wrap">
+          <a href="#typeface" class="scroll-cue"
+            >Discover the typeface <span aria-hidden="true">↓</span></a
+          ><span
+            >18 styles <span class="muted">/</span> 395 characters
+            <span class="muted">/</span> Open source</span
+          >
+        </div>
+      </section>
+
+      <section id="typeface" class="intro section wrap">
+        <div class="section-kicker">
+          <span>01 / The typeface</span><span>Geometry, with personality.</span>
+        </div>
+        <h2 class="intro-title reveal">
+          Built to be clear.<br /><span class="muted">Made to be felt.</span>
+        </h2>
+        <div class="intro-bottom">
+          <p>
+            A geometric sans with an unmistakable human touch. Clean
+            proportions, open counters, and quietly rounded corners. Familiar at
+            first glance. Distinct on a second look.
+          </p>
+          <div class="spec-facts">
+            <div><span>09 + 09</span><small>Upright + italic</small></div>
+            <div><span>395</span><small>Encoded characters</small></div>
+            <div><span>OFL</span><small>Open to possibility</small></div>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <article class="detail-card reveal">
+            <div class="detail-glyph" aria-hidden="true">aq</div>
+            <span class="detail-index">01</span>
+            <h3>Soft edges. Strong character.</h3>
+            <p>
+              A small, asymmetric curve turns a familiar terminal into something
+              unmistakably Satoma.
+            </p>
+          </article>
+          <article class="detail-card reveal">
+            <div class="detail-glyph" aria-hidden="true">gQ</div>
+            <span class="detail-index">02</span>
+            <h3>Details that make the difference.</h3>
+            <p>
+              A returning hook. A balanced diagonal. Purposeful forms, down to
+              the last stroke.
+            </p>
+          </article>
+          <article class="detail-card reveal">
+            <div class="detail-glyph weight-shift" aria-hidden="true">Aa</div>
+            <span class="detail-index">03</span>
+            <h3>One voice. Eighteen expressions.</h3>
+            <p>
+              From quiet body copy to a bold first impression. A coherent family
+              at every weight.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="playground" class="playground section wrap">
+        <div class="section-kicker">
+          <span>02 / Make it yours</span><span>Type. Adjust. Explore.</span>
+        </div>
+        <div class="section-heading">
+          <h2>Your words.<br /><span class="muted">Our curves.</span></h2>
+          <p>Every idea starts with a letter.<br />What will yours say?</p>
+        </div>
+        <div class="tester-controls">
+          <label
+            >Weight<select id="tester-weight">
+              <option value="400">Regular — 400</option>
+              <option value="500">Medium — 500</option>
+              <option value="600">Demi Bold — 600</option>
+              <option value="700" selected>Bold — 700</option>
+            </select></label
+          >
+          <label
+            >Size <output id="size-output">104 px</output
+            ><input
+              id="tester-size"
+              type="range"
+              min="24"
+              max="180"
+              value="104"
+          /></label>
+          <label
+            >Tracking <output id="tracking-output">0.000 em</output
+            ><input
+              id="tester-tracking"
+              type="range"
+              min="-0.03"
+              max="0.125"
+              step="0.005"
+              value="0"
+          /></label>
+          <div class="tester-actions">
+            <button
+              id="invert"
+              aria-pressed="false"
+              type="button"
+              aria-label="Invert playground colors"
+              title="Invert playground colors"
+            >
+              ◐</button
+            ><button
+              id="reset"
+              type="button"
+              aria-label="Reset playground"
+              title="Reset playground"
+            >
+              ↺
+            </button>
+          </div>
+        </div>
+        <div class="tester-variants">
+          <label
+            >Style<select id="tester-font-style">
+              <option value="normal">Upright</option>
+              <option value="italic">Italic</option>
+            </select></label
+          >
+          <label
+            >Decoration<select id="tester-decoration">
+              <option value="none">None</option>
+              <option value="underline">Underline</option>
+              <option value="line-through">Strikethrough</option>
+              <option value="underline line-through">Both</option>
+            </select></label
+          >
+          <label
+            >Numbers<select id="tester-numbers">
+              <option value="normal">Proportional</option>
+              <option value="tabular-nums">Tabular</option>
+            </select></label
+          >
+        </div>
+        <div class="type-surface">
+          <label for="tester-text" class="sr-only">Try Satoma Sans</label
+          ><textarea id="tester-text" spellcheck="false" maxlength="600">
+Stay curious.&#10;Make something.</textarea>
+          <div class="surface-footer">
+            <span id="coverage-status" role="status"
+              >Your canvas. Start typing.</span
+            ><span>Satoma Sans / <span id="tester-style">Bold</span></span>
+          </div>
+        </div>
+        <div class="sample-chips" role="group" aria-label="Sample texts">
+          <button
+            data-sample="Stay curious.&#10;Make something."
+            type="button"
+            aria-pressed="true"
+          >
+            The idea</button
+          ><button
+            data-sample="The quick brown fox jumps over the lazy dog."
+            type="button"
+            aria-pressed="false"
+          >
+            The classic</button
+          ><button
+            data-sample="Less noise.&#10;More meaning."
+            type="button"
+            aria-pressed="false"
+          >
+            The statement</button
+          ><button
+            data-sample="0123456789&#10;$€£¥ + − × ÷ ="
+            type="button"
+            aria-pressed="false"
+          >
+            The numbers
+          </button>
+        </div>
+      </section>
+
+      <section class="family section wrap" id="family">
+        <div class="section-kicker">
+          <span>03 / The family</span
+          ><span>Nine weights. Upright + italic.</span>
+        </div>
+        <div id="weight-specimens"></div>
+      </section>
+
+      <section class="statement" aria-label="Type specimen">
+        <div class="statement-inner">
+          <p>Not louder.</p>
+          <p class="outline-type">Just clearer.</p>
+          <span class="micro">Satoma Sans — Medium 500</span>
+        </div>
+        <span class="statement-cross" aria-hidden="true">✳</span>
+      </section>
+
+      <section id="characters" class="characters section wrap">
+        <div class="section-kicker">
+          <span>04 / Every character counts</span
+          ><span>Latin & extended Latin</span>
+        </div>
+        <div class="section-heading">
+          <h2>Full of<br /><span class="muted">character.</span></h2>
+          <p>
+            Explore the complete character set.<br />Select a glyph for a closer
+            look.
+          </p>
+        </div>
+        <div class="character-controls">
+          <div class="filter-group" aria-label="Character category">
+            <button data-category="all" aria-pressed="true">
+              All characters</button
+            ><button data-category="letters" aria-pressed="false">
+              Letters</button
+            ><button data-category="numbers" aria-pressed="false">
+              Numbers</button
+            ><button data-category="symbols" aria-pressed="false">
+              Symbols
+            </button>
+          </div>
+          <label class="glyph-weight-label"
+            >Weight<select id="glyph-weight">
+              <option value="400">Regular</option>
+              <option value="500">Medium</option>
+              <option value="600">Demi Bold</option>
+              <option value="700" selected>Bold</option>
+            </select></label
+          >
+          <label class="glyph-weight-label"
+            >Style<select id="glyph-style">
+              <option value="normal">Upright</option>
+              <option value="italic">Italic</option>
+            </select></label
+          >
+        </div>
+        <div id="glyph-grid" class="glyph-grid"></div>
+        <p class="glyph-note">
+          <span id="glyph-count"></span> visible characters · Spaces and
+          precomposed Latin accents included. No standalone combining marks or
+          Cyrillic.
+        </p>
+      </section>
+
+      <section id="download" class="download section wrap">
+        <div class="section-kicker">
+          <span>05 / Yours to use</span
+          ><span>Free for personal & commercial projects</span>
+        </div>
+        <h2>Good type.<br /><span class="muted">Great possibilities.</span></h2>
+        <a
+          class="download-main"
+          href="/fonts/satoma-sans-family.zip?v=0.302"
+          download
+          ><span
+            >Download Satoma Sans<small
+              >All 18 styles · TTF + WOFF2 · CSS + source + license</small
+            ></span
+          ><span class="download-arrow" aria-hidden="true">↗</span></a
+        >
+        <div id="individual-downloads" class="individual-downloads"></div>
+        <p class="integration-link">
+          <a href="/fonts/WEBAPP-USAGE.md">Webapp integration guide ↗</a> ·
+          Native tight spacing. Set tracking to 0.
+        </p>
+        <div class="license-note">
+          <span class="micro">Open source, openly.</span>
+          <p>
+            Satoma Sans is a modified version of Albert Sans, licensed under the
+            SIL Open Font License 1.1. Use it in your websites, apps, and
+            designs. Keep the copyright and license with redistributed font
+            files.
+          </p>
+          <a href="/fonts/satoma-sans-OFL.txt">Read the license ↗</a>
+          <a href="https://github.com/robin-liquidium/satoma-sans"
+            >Source, releases & contributions ↗</a
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="wrap">
+      <a class="footer-logo" href="#top">Satoma Sans<span>↗</span></a>
+      <div>
+        <a href="https://robin.build">A type project by Robin ↗</a
+        ><a href="https://github.com/robin-liquidium/satoma-sans">GitHub ↗</a
+        ><span>Edition 2026 · Font <span id="font-version"></span></span
+        ><a href="#top">Back to top ↑</a>
+      </div>
+    </footer>
+    <dialog id="glyph-dialog">
+      <div class="dialog-top">
+        <span id="glyph-code"></span
+        ><button id="close-glyph" aria-label="Close character preview">
+          ✕
+        </button>
+      </div>
+      <div id="glyph-preview"></div>
+      <div class="dialog-bottom">
+        <span id="glyph-name"></span><span>Satoma Sans</span>
+      </div>
+    </dialog>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

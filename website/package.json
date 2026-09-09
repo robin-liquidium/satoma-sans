@@ -1,0 +1,29 @@
+{
+  "name": "satoma-sans-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "deploy": "pnpm build && wrangler deploy",
+    "test": "playwright test",
+    "check:shader": "vgpu check --require-validation src/glass.wgsl && vgpu check --require-validation scripts/glass-proof.wgsl && node scripts/check-shader.mjs"
+  },
+  "dependencies": {
+    "three": "^0.185.1",
+    "three-mesh-bvh": "0.9.14",
+    "vgpu": "^0.4.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/pngjs": "^6.0.5",
+    "@types/three": "^0.185.4",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "wrangler": "^4.129.0"
+  }
+}

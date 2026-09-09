@@ -1,0 +1,18 @@
+{
+  "name": "satoma-sans",
+  "version": "0.302.0",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "setup:font": "python3 -m venv .venv && .venv/bin/python -m pip install -r font/requirements.txt",
+    "build:font": ".venv/bin/python font/scripts/generate_satoma.py && .venv/bin/python font/scripts/validate_release.py",
+    "prepare:website": "node scripts/prepare-website.mjs",
+    "build": "pnpm build:font && pnpm prepare:website && pnpm --dir website build",
+    "dev": "pnpm prepare:website && pnpm --dir website dev --port 3002",
+    "test:font": ".venv/bin/python font/scripts/audit_satoma_family.py",
+    "test:website": "pnpm --dir website test",
+    "deploy": "pnpm --dir website exec wrangler deploy",
+    "deploy:check": "pnpm --dir website exec wrangler deploy --dry-run"
+  }
+}
