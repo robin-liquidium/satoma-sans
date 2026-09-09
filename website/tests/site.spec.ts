@@ -280,10 +280,12 @@ test.describe("frame scheduling", () => {
   test("mouse interaction renders at browser cadence instead of a 30 fps cap", async ({
     page,
   }) => {
+    await page.clock.install({ time: new Date("2026-09-09T00:00:00Z") });
     await page.goto("/");
     await expect(page.locator(".sculpture-stage")).toHaveClass(/ready/);
     await page.locator("#sculpture").scrollIntoViewIfNeeded();
-    const cadence = await page.evaluate(async () => {
+    await page.clock.pauseAt(new Date("2026-09-09T01:00:00Z"));
+    const cadenceResult = page.evaluate(async () => {
       const stage = document.querySelector(".sculpture-stage")!;
       const box = stage.getBoundingClientRect();
       // Count actual GPU submissions, grouping multiple passes in one frame.
@@ -321,7 +323,11 @@ test.describe("frame scheduling", () => {
       }
       return { frames, renders: times.length };
     });
-    expect(cadence.frames).toBeGreaterThan(15);
+    // Real GPU submissions, but deterministic ~60 Hz RAF timestamps. A slow
+    // software renderer must not turn this into a VM benchmark or hide a cap.
+    await page.clock.runFor(1600);
+    const cadence = await cadenceResult;
+    expect(cadence.frames).toBeGreaterThan(80);
     expect(cadence.renders / cadence.frames).toBeGreaterThan(0.8);
   });
 });
