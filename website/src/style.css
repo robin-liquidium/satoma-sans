@@ -830,7 +830,13 @@ input[type="range"] {
   line-height: 1.6;
   max-width: 560px;
 }
-.license-note > a {
+.license-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+.license-links a {
   text-align: right;
   font-size: 14px;
   text-decoration: underline;
@@ -1284,7 +1290,10 @@ dialog::backdrop {
   .license-note p {
     font-size: 13px;
   }
-  .license-note > a {
+  .license-links {
+    align-items: flex-start;
+  }
+  .license-links a {
     text-align: left;
     font-size: 13px;
   }

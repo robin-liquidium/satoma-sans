@@ -333,7 +333,10 @@ def shear_font(font, slope):
         glyph = glyf[name]
         if not glyph.numberOfContours: continue
         for i, (x, y) in enumerate(glyph.coordinates):
-            glyph.coordinates[i] = (x + slope * (y - 250), y)
+            # Equivalent shear operations can land a few floating-point bits
+            # either side of a half-unit on different libm implementations.
+            # Normalize that noise before TrueType's integer rounding.
+            glyph.coordinates[i] = (round(x + slope * (y - 250), 8), round(y, 8))
         glyph.removeHinting(); glyph.recalcBounds(glyf)
         font["hmtx"][name] = (font["hmtx"][name][0], glyph.xMin)
 
