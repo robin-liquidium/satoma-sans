@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Raised lowercase t and its cedilla, caron, and comma-below forms to the
+  700-unit cap/ascender height in all nine weights and their italics. Crossbars,
+  terminals, and accent positions are preserved.
+- Added ascender-height checks to the family audit, including accented t stems.
+- Aligned ł and þ stems to the same height across weights and italics.
+- Adjusted pair spacing where accents approach the taller stems.
+
 ## 0.302 — 2026-09-09
 
 - First dedicated public repository and release package.

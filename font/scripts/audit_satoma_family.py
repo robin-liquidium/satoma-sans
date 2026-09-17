@@ -40,6 +40,15 @@ def run(calibrate=False):
         assert font["hmtx"].metrics == web["hmtx"].metrics
         assert cmap == web.getBestCmap()
         assert font["glyf"].compile(font) == web["glyf"].compile(web)
+        # Check the stem rather than the full accented glyph bounding box:
+        # tcaron's floating mark can hide a stem that is still too short.
+        for char in "bdhklłþtţťț":
+            glyph = font["glyf"][cmap[ord(char)]]; start = 0; body_tops = []
+            for end in glyph.endPtsOfContours:
+                ys = [y for x, y in glyph.coordinates[start:end+1]]; start = end+1
+                if min(ys) <= os2.sxHeight and max(ys) > os2.sxHeight:
+                    body_tops.append(max(ys))
+            assert body_tops and max(body_tops) == os2.sCapHeight, (key, char, "ascender height", body_tops)
         if style["weight"] <= 300:
             period = font["glyf"][cmap[ord(".")]]
             for char in "ijįﬁ":

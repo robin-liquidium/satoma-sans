@@ -91,7 +91,7 @@ def customize(font, italic=False, weight=400):
     dot_height = period.yMax - period.yMin if weight <= 300 else dot_width
     targets = {c: [tuple(glyf[cmap[ord(c)]].coordinates[i]) for i in indices]
                for c, indices in corners.items()}
-    ascenders = {c: max(y for x,y in glyf[cmap[ord(c)]].coordinates) for c in "bdhkl"}
+    ascenders = {c: max(y for x,y in glyf[cmap[ord(c)]].coordinates) for c in "bdhklł"}
     widths = {c:(min(x for x,y in glyf[cmap[ord(c)]].coordinates),
                  max(x for x,y in glyf[cmap[ord(c)]].coordinates)-min(x for x,y in glyf[cmap[ord(c)]].coordinates)) for c in WIDTH_SCALE}
     original_y = list(glyf[cmap[ord("y")]].coordinates)
@@ -100,7 +100,7 @@ def customize(font, italic=False, weight=400):
         if name in processed: continue
         processed.add(name)
         char = chr(cp); base = {"ı":"i", "ł":"l", "đ":"d", "ħ":"h"}.get(char,unicodedata.normalize("NFD", char)[0])
-        if base not in CORNERS and base not in "abcdefghijklmnopqrstuvwxyz" and char != "Q" and not (weight <= 300 and char == "ﬁ"): continue
+        if base not in CORNERS and base not in "abcdefghijklmnopqrstuvwxyzþ" and char != "Q" and not (weight <= 300 and char == "ﬁ"): continue
         glyph = glyf[name]
         if glyph.isComposite(): continue  # references automatically inherit edits
         if base == "y":
@@ -143,16 +143,31 @@ def customize(font, italic=False, weight=400):
                     prev, nxt = (end if i == first else i-1), (first if i == end else i+1)
                     if glyph.flags[prev]&1 and glyph.flags[nxt]&1: indices.append(i)
         if char in corners: assert len(indices) == len(corners[char]), char
+        if base in "tþ":
+            # Align only the stem's top edge before rounding it. The crossbar,
+            # terminal, and separate accents stay put, including tcaron's mark.
+            # The cedilla form has a different upstream stem height/contour.
+            first = 0
+            for end in glyph.endPtsOfContours:
+                ys = [y for x, y in glyph.coordinates[first:end+1]]
+                top = max(ys)
+                if min(ys) <= 500 and top > 550:
+                    for i in range(first, end+1):
+                        x, y = glyph.coordinates[i]
+                        if y == top: glyph.coordinates[i] = (x, 700)
+                first = end+1
         if indices: round_corners(glyph, indices, stem*.40)
         if base in "bdhkl":
             # Only contours reaching the body, not a floating diacritic.
+            # Slashed l has its own source height, which varies with weight.
+            ascender = ascenders.get(char, ascenders[base])
             first = 0
             for end in glyph.endPtsOfContours:
                 ys = [glyph.coordinates[i][1] for i in range(first, end+1)]
-                if min(ys) <= 500 and max(ys) <= ascenders[base]+.01:
+                if min(ys) <= 500 and max(ys) <= ascender+.01:
                     for i in range(first, end+1):
                         x, y = glyph.coordinates[i]
-                        if y > 500: glyph.coordinates[i] = (x, 500+(y-500)*200/(ascenders[base]-500))
+                        if y > 500: glyph.coordinates[i] = (x, 500+(y-500)*200/(ascender-500))
                 first = end+1
         if base in "abcdefghijklmnopqrsuvwxyz":
             # Shared body/descender proportions keep b/d/p/q and their accents

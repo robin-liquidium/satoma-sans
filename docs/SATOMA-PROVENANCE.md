@@ -28,6 +28,9 @@ The family archive includes that source, license, and reproducible generator.
 - Rounded ear/spur corners on a, b, d, g, m, n, p, q, r, and u.
 - Original shoulder curves retained: no swollen connector geometry is added.
 - b/d/h/k/l ascenders aligned to cap height; i/j dots vertically repositioned.
+- Lowercase t, including cedilla, caron, and comma-below forms, raised to the
+  same cap height while retaining crossbar, terminal, and accent positions.
+- Slashed l and thorn stems aligned to cap height across weights and italics.
 - Thin, Extra Light, and Light dots on i/j/į and the fi ligature match the
   period's dimensions, in upright and italic, without changing their centers.
 - A returning y descender and diagonal Q tail, anchored inside the counter
