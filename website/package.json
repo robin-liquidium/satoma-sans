@@ -12,8 +12,8 @@
     "check:shader": "vgpu check --require-validation src/glass.wgsl && vgpu check --require-validation scripts/glass-proof.wgsl && node scripts/check-shader.mjs"
   },
   "dependencies": {
+    "lenis": "^1.3.26",
     "three": "^0.185.1",
-    "three-mesh-bvh": "0.9.14",
     "vgpu": "^0.4.0"
   },
   "devDependencies": {
