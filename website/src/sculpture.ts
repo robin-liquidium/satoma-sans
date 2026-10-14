@@ -233,10 +233,12 @@ export async function mountSculpture(canvas: HTMLCanvasElement) {
       letter.position.y = Math.sin(elapsed * 0.6) * 0.12;
     }
     // Time-based easing behaves consistently at 60 Hz and high refresh rates.
-    letter.quaternion.slerp(target, 1 - Math.exp(-10 * dt));
+    // Reduced motion jumps straight to the new pose instead of easing.
+    const step = reduced.matches ? Infinity : dt;
+    letter.quaternion.slerp(target, 1 - Math.exp(-10 * step));
     if (letter.quaternion.angleTo(target) < 0.0005)
       letter.quaternion.copy(target);
-    draw(dt);
+    draw(step);
     frame = requestAnimationFrame(tick);
   };
   const resume = () => {
