@@ -7,7 +7,6 @@ import {
   pow,
   smoothstep,
   uniform,
-  vec3,
   vec4,
 } from "three/tsl";
 import { glassIor, refract } from "./optics";

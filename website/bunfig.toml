@@ -17,3 +17,8 @@ ignorePatterns = [
   "worker-configuration.d.ts",
   "public/fonts",
 ]
+
+# These tests patch browser globals inside page.evaluate, which have no types here.
+[[lint.overrides]]
+files = ["tests/**"]
+rules = { "@typescript-eslint/no-explicit-any" = "off", "@typescript-eslint/no-unsafe-assignment" = "off", "@typescript-eslint/no-unsafe-member-access" = "off", "@typescript-eslint/no-unsafe-return" = "off", "@typescript-eslint/no-unsafe-call" = "off" }
