@@ -25,6 +25,10 @@ jobs:
           cache: pip
           cache-dependency-path: font/requirements.txt
       - run: pnpm install --frozen-lockfile
+      - run: pnpm prepare:website
+      - run: pnpm --dir website fmt:check
+      - run: pnpm --dir website lint
+      - run: pnpm --dir website check
       - run: pnpm setup:font
       - run: pnpm build
       - name: Ensure committed fonts match the source

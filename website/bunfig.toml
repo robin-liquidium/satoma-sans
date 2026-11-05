@@ -1,0 +1,19 @@
+[fmt]
+ignorePatterns = [
+  "dist",
+  ".wrangler",
+  "test-results",
+  "worker-configuration.d.ts",
+  "public/fonts",
+]
+
+[lint]
+typeAware = true
+maxWarnings = 0
+ignorePatterns = [
+  "dist",
+  ".wrangler",
+  "test-results",
+  "worker-configuration.d.ts",
+  "public/fonts",
+]
