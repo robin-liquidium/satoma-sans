@@ -76,8 +76,9 @@ export async function mountSculpture(canvas: HTMLCanvasElement) {
   const environment = pmrem.fromScene(room, 0.02);
   room.traverse((object) => {
     if (object instanceof THREE.Mesh) {
-      object.geometry.dispose();
-      object.material.dispose();
+      const mesh = object as THREE.Mesh<THREE.BufferGeometry, THREE.Material>;
+      mesh.geometry.dispose();
+      mesh.material.dispose();
     }
   });
   scene.environment = environment.texture;
@@ -155,6 +156,7 @@ export async function mountSculpture(canvas: HTMLCanvasElement) {
     normalView.dot(positionViewDirection).abs().oneMinus(),
     2,
   );
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- bun check resolves these vgpu TSL types; the type-aware lint can't
   material.roughnessNode = glassRoughness({ position: positionLocal }).add(
     grazing.mul(0.35),
   );
@@ -264,11 +266,11 @@ export async function mountSculpture(canvas: HTMLCanvasElement) {
     ctx.letterSpacing = `${(parseFloat(style.letterSpacing) || 0) * scale}px`;
     ctx.fillStyle = style.color;
     // Place the baseline exactly where CSS inline layout does.
-    const metrics = ctx.measureText(word.textContent!);
+    const metrics = ctx.measureText(word.textContent);
     const ascent = metrics.fontBoundingBoxAscent;
     const content = ascent + metrics.fontBoundingBoxDescent;
     ctx.fillText(
-      word.textContent!,
+      word.textContent,
       0,
       (box.height * scale - content) / 2 + ascent,
     );
@@ -379,7 +381,7 @@ export async function mountSculpture(canvas: HTMLCanvasElement) {
   );
   await document.fonts.load(
     `${getComputedStyle(word).fontWeight} 100px "Satoma Sans"`,
-    word.textContent!,
+    word.textContent,
   );
   resize();
   await renderer.compileAsync(scene, camera);

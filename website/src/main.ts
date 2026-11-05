@@ -134,7 +134,7 @@ function drawAnatomy() {
   }
 }
 drawAnatomy();
-document.fonts.ready.then(drawAnatomy);
+void document.fonts.ready.then(drawAnatomy);
 
 // Thin to Black: the sticky word steps through the weights as you scroll.
 const scrub = get("weight-scrub");
@@ -275,7 +275,7 @@ get("reset").addEventListener("click", () => {
   chips[0].click();
 });
 updateTester();
-document.fonts.ready.then(updateTester);
+void document.fonts.ready.then(updateTester);
 
 const dialog = get<HTMLDialogElement>("glyph-dialog");
 const glyphWeight = get<HTMLSelectElement>("glyph-weight");
@@ -342,7 +342,7 @@ function renderGlyphs() {
 for (const type of ["pointerover", "focusin"])
   grid.addEventListener(type, (event) => {
     const button = (event.target as HTMLElement).closest("button");
-    if (button) inspect(button.textContent!);
+    if (button) inspect(button.textContent);
   });
 categories.forEach((button) =>
   button.addEventListener("click", () => {
@@ -377,8 +377,8 @@ dialog.addEventListener("click", (event) => {
 renderGlyphs();
 
 requestAnimationFrame(() =>
-  requestAnimationFrame(() =>
-    import("./sculpture")
+  requestAnimationFrame(() => {
+    void import("./sculpture")
       .then((module) =>
         module.mountSculpture(get<HTMLCanvasElement>("sculpture")),
       )
@@ -388,6 +388,6 @@ requestAnimationFrame(() =>
           "3D enhancement unavailable:",
           error instanceof Error ? error.message : error,
         );
-      }),
-  ),
+      });
+  }),
 );

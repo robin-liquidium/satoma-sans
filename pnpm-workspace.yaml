@@ -1,6 +1,7 @@
 packages:
   - website
 allowBuilds:
+  bun: true
   '@vgpu/adapter-node': true
   webgpu: true
   esbuild: true
