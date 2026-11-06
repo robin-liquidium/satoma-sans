@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Audit all 18 real styles and calibrate only actual pair clearance failures."""
 import argparse
+import io
 import json
 import math
 import unicodedata
@@ -10,8 +11,62 @@ import numpy as np
 import uharfbuzz as hb
 from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
-from generate_satoma import ROOT, OUT, VERSION
+from fontTools.pens.recordingPen import DecomposingRecordingPen
+from generate_satoma import ROOT, OUT, VERSION, WEB_LICENSE, web_subsets
 from outline_profile import profile
+
+
+def assert_web_matches(path):
+    """Each browser file must shape and draw its characters exactly like the TTF."""
+    desktop = TTFont(path)
+    def shaper(font):
+        data = io.BytesIO(); font.flavor = None; font.save(data)
+        hb_font = hb.Font(hb.Face(data.getvalue())); glyphs = font.getGlyphSet(); order = font.getGlyphOrder(); outlines = {}
+        def outline(gid):
+            if gid not in outlines:
+                pen = DecomposingRecordingPen(glyphs); glyphs[order[gid]].draw(pen); outlines[gid] = tuple(pen.value)
+            return outlines[gid]
+        def run(text, features):
+            buffer = hb.Buffer(); buffer.add_str(text); buffer.guess_segment_properties(); hb.shape(hb_font, buffer, features)
+            return [(outline(i.codepoint), i.cluster, p.x_advance, p.y_advance, p.x_offset, p.y_offset)
+                for i, p in zip(buffer.glyph_infos, buffer.glyph_positions)]
+        return run
+    reference = shaper(desktop)
+    def glyph_data(font):
+        glyphs = font.getGlyphSet(); data = []
+        for name in font.getGlyphOrder():
+            pen = DecomposingRecordingPen(glyphs); glyphs[name].draw(pen); glyph = font["glyf"][name]
+            program = glyph.program.getBytecode() if hasattr(glyph, "program") else b""
+            data.append((tuple(pen.value), font["hmtx"][name], program))
+        return data
+    desktop_glyphs = glyph_data(desktop)
+    for suffix, codepoints in web_subsets(sorted(desktop.getBestCmap())).items():
+        web = TTFont(path.with_name(path.stem + suffix + ".woff2"))
+        assert sorted(web.getBestCmap()) == codepoints, (path.stem + suffix, "cmap")
+        assert web["name"].getDebugName(13) == WEB_LICENSE
+        for table, fields in (("hhea", ("ascent", "descent", "lineGap")), ("head", ("unitsPerEm",)), ("OS/2", ("sTypoAscender",
+                "sTypoDescender", "sTypoLineGap", "usWinAscent", "usWinDescent", "fsSelection", "usWeightClass"))):
+            for field in fields:
+                assert getattr(web[table], field) == getattr(desktop[table], field), (path.stem + suffix, table, field)
+        for table in ("gasp", "prep"):
+            assert web[table].compile(web) == desktop[table].compile(desktop), (path.stem + suffix, table)
+        # Subsetting keeps glyph order, so every web glyph (including .notdef)
+        # must equal the next matching desktop glyph in outline, metrics, and hinting.
+        web_glyphs = glyph_data(web); index = 0
+        assert web_glyphs[0] == desktop_glyphs[0], (path.stem + suffix, ".notdef")
+        for gid, glyph in enumerate(web_glyphs):
+            while index < len(desktop_glyphs) and desktop_glyphs[index] != glyph: index += 1
+            assert index < len(desktop_glyphs), (path.stem + suffix, "glyph", gid)
+            index += 1
+        if not suffix: assert len(web_glyphs) == len(desktop_glyphs), (path.stem, "glyph count")
+        candidate = shaper(web)
+        characters = [chr(c) for c in codepoints if unicodedata.category(chr(c))[0] != "C"]
+        pairs = "".join(a + b for a in characters for b in characters)
+        sample = "".join(characters) + "".join(c for c in " 1/2 3/4 10/100 1st 2nd 3rd No. 0123456789" if ord(c) in codepoints)
+        checks = [(pairs, {})] + [(sample, {tag: True}) for tag in
+            ("frac", "tnum", "sups", "ordn", "liga", "ss01", "ss02", "ss03", "ss04", "ss05")]
+        for text, features in checks:
+            assert candidate(text, features) == reference(text, features), (path.stem + suffix, features)
 
 
 def run(calibrate=False):
@@ -23,7 +78,7 @@ def run(calibrate=False):
     for style in manifest["styles"]:
         key = str(style["weight"]) + ("-italic" if style["italic"] else "")
         path = OUT / (style["fileStem"] + ".ttf")
-        font = TTFont(path); web = TTFont(path.with_suffix(".woff2"))
+        font = TTFont(path); assert_web_matches(path)
         cmap = font.getBestCmap(); os2 = font["OS/2"]
         assert font["name"].getDebugName(16) == "Satoma Sans"
         name = font["name"].getDebugName(6)
@@ -37,9 +92,6 @@ def run(calibrate=False):
         assert font["post"].underlinePosition < 0
         assert 0 < os2.yStrikeoutPosition < os2.sxHeight
         assert font["post"].underlineThickness > 0 and os2.yStrikeoutSize > 0
-        assert font["hmtx"].metrics == web["hmtx"].metrics
-        assert cmap == web.getBestCmap()
-        assert font["glyf"].compile(font) == web["glyf"].compile(web)
         # Check the stem rather than the full accented glyph bounding box:
         # tcaron's floating mark can hide a stem that is still too short.
         for char in "bdhklłþtţťț":

@@ -18,7 +18,7 @@ WOFF2 files, CSS, and `OFL.txt` into your application's public fonts folder:
 
 ```css
 body {
-  font-family: "Satoma Sans", sans-serif;
+  font-family: "Satoma Sans", "Satoma Sans Fallback", sans-serif;
   font-weight: 400;
   letter-spacing: 0;
 }
@@ -27,6 +27,10 @@ strong { font-weight: 700; }
 em { font-style: italic; }
 .balance { font-variant-numeric: tabular-nums; }
 ```
+
+English-only apps can use `satoma-sans-split.css` instead, which loads a
+~13 KB Latin core per style. See the [webapp guide](docs/WEBAPP-USAGE.md) for
+the tradeoff, preloading, and caching.
 
 For desktop use, install the TTF files. Only load the weights/styles your app
 needs. Pin a release and upgrade intentionally; the website's latest download
@@ -47,7 +51,7 @@ is not an immutable production dependency.
 | 900 | Black |
 
 Each weight has upright and native italic files: 18 static styles, TTF and
-WOFF2, 395 encoded Latin/extended Latin characters, proportional and tabular
+WOFF2 (complete, plus Latin core and extended halves), 395 encoded Latin/extended Latin characters, proportional and tabular
 numbers. Underline and strikethrough work through normal text decoration.
 This is not a variable font, and it does not include Cyrillic or arbitrary
 combining-mark coverage. Current releases are pre-1.0.

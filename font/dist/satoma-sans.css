@@ -1,6 +1,26 @@
 @font-face {
+  font-family: "Satoma Sans Fallback";
+  src: local("Arial"), local("ArialMT");
+  font-weight: 100 500;
+  size-adjust: 95.79%;
+  ascent-override: 99.17%;
+  descent-override: 26.10%;
+  line-gap-override: 0.00%;
+}
+
+@font-face {
+  font-family: "Satoma Sans Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT");
+  font-weight: 600 900;
+  size-adjust: 90.48%;
+  ascent-override: 104.99%;
+  descent-override: 27.63%;
+  line-gap-override: 0.00%;
+}
+
+@font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-100.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-100.woff2?v=0.303") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -8,7 +28,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-200.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-200.woff2?v=0.303") format("woff2");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -16,7 +36,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-300.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-300.woff2?v=0.303") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -24,7 +44,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-400.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-400.woff2?v=0.303") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -32,7 +52,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-500.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-500.woff2?v=0.303") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -40,7 +60,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-600.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-600.woff2?v=0.303") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -48,7 +68,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-700.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-700.woff2?v=0.303") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -56,7 +76,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-800.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-800.woff2?v=0.303") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -64,7 +84,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-900.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-900.woff2?v=0.303") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -72,7 +92,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-100-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-100-italic.woff2?v=0.303") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
@@ -80,7 +100,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-200-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-200-italic.woff2?v=0.303") format("woff2");
   font-weight: 200;
   font-style: italic;
   font-display: swap;
@@ -88,7 +108,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-300-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-300-italic.woff2?v=0.303") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
@@ -96,7 +116,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-400-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-400-italic.woff2?v=0.303") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -104,7 +124,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-500-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-500-italic.woff2?v=0.303") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -112,7 +132,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-600-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-600-italic.woff2?v=0.303") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -120,7 +140,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-700-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-700-italic.woff2?v=0.303") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -128,7 +148,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-800-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-800-italic.woff2?v=0.303") format("woff2");
   font-weight: 800;
   font-style: italic;
   font-display: swap;
@@ -136,7 +156,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-900-italic.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-900-italic.woff2?v=0.303") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;

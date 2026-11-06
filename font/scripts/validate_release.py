@@ -3,7 +3,7 @@ import hashlib
 import json
 import zipfile
 from fontTools.ttLib import TTFont
-from generate_satoma import OUT, REPO, SOURCE, SOURCE_SHA, ITALIC_SOURCE, ITALIC_SOURCE_SHA, VERSION
+from generate_satoma import OUT, REPO, SOURCE, SOURCE_SHA, ITALIC_SOURCE, ITALIC_SOURCE_SHA, VERSION, WEB_LICENSE, web_subsets
 
 assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == SOURCE_SHA
 assert hashlib.sha256(ITALIC_SOURCE.read_bytes()).hexdigest() == ITALIC_SOURCE_SHA
@@ -12,12 +12,15 @@ assert manifest["version"] == VERSION and len(manifest["styles"]) == 18
 license_text = (REPO / "OFL.txt").read_text()
 assert "Albert Sans Project Authors" in license_text and "Robin Obermaier" in license_text
 for style in manifest["styles"]:
-    for extension in ("ttf", "woff2"):
-        font = TTFont(OUT / f"{style['fileStem']}.{extension}")
+    files = {f"{style['fileStem']}.ttf": (license_text, manifest["codepoints"])}
+    files.update({f"{style['fileStem']}{suffix}.woff2": (WEB_LICENSE, codepoints)
+        for suffix, codepoints in web_subsets(manifest["codepoints"]).items()})
+    for file, (license, codepoints) in files.items():
+        font = TTFont(OUT / file)
         assert font["name"].getDebugName(16) == "Satoma Sans"
-        assert font["name"].getDebugName(13) == license_text
+        assert font["name"].getDebugName(13) == license
         assert font["name"].getDebugName(11) == "https://satoma.robin.build"
-        assert sorted(font.getBestCmap()) == manifest["codepoints"]
+        assert sorted(font.getBestCmap()) == codepoints
         assert font["OS/2"].fsType == 0
         assert font["OS/2"].usWeightClass == style["weight"]
         font.close()
