@@ -32,6 +32,14 @@ def assert_web_matches(path):
                 for i, p in zip(buffer.glyph_infos, buffer.glyph_positions)]
         return run
     reference = shaper(desktop)
+    def glyph_data(font):
+        glyphs = font.getGlyphSet(); data = []
+        for name in font.getGlyphOrder():
+            pen = DecomposingRecordingPen(glyphs); glyphs[name].draw(pen); glyph = font["glyf"][name]
+            program = glyph.program.getBytecode() if hasattr(glyph, "program") else b""
+            data.append((tuple(pen.value), font["hmtx"][name], program))
+        return data
+    desktop_glyphs = glyph_data(desktop)
     for suffix, codepoints in web_subsets(sorted(desktop.getBestCmap())).items():
         web = TTFont(path.with_name(path.stem + suffix + ".woff2"))
         assert sorted(web.getBestCmap()) == codepoints, (path.stem + suffix, "cmap")
@@ -42,6 +50,15 @@ def assert_web_matches(path):
                 assert getattr(web[table], field) == getattr(desktop[table], field), (path.stem + suffix, table, field)
         for table in ("gasp", "prep"):
             assert web[table].compile(web) == desktop[table].compile(desktop), (path.stem + suffix, table)
+        # Subsetting keeps glyph order, so every web glyph (including .notdef)
+        # must equal the next matching desktop glyph in outline, metrics, and hinting.
+        web_glyphs = glyph_data(web); index = 0
+        assert web_glyphs[0] == desktop_glyphs[0], (path.stem + suffix, ".notdef")
+        for gid, glyph in enumerate(web_glyphs):
+            while index < len(desktop_glyphs) and desktop_glyphs[index] != glyph: index += 1
+            assert index < len(desktop_glyphs), (path.stem + suffix, "glyph", gid)
+            index += 1
+        if not suffix: assert len(web_glyphs) == len(desktop_glyphs), (path.stem, "glyph count")
         candidate = shaper(web)
         characters = [chr(c) for c in codepoints if unicodedata.category(chr(c))[0] != "C"]
         pairs = "".join(a + b for a in characters for b in characters)

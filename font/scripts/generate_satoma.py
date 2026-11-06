@@ -52,7 +52,8 @@ LETTER_FREQUENCY = {"a": 8.2, "b": 1.5, "c": 2.8, "d": 4.3, "e": 12.7, "f": 2.2,
     "z": .074, " ": 18.0}
 # Arial's average em width with those frequencies (measured from the
 # metric-identical Liberation Sans), and the weights each fallback face covers.
-FALLBACKS = {400: ("Arial", .44704, "100 500"), 700: ("Arial Bold", .4841, "600 900")}
+FALLBACKS = {400: ('local("Arial"), local("ArialMT")', .44704, "100 500"),
+    700: ('local("Arial Bold"), local("Arial-BoldMT")', .4841, "600 900")}
 BRAND_PAIRS = {"Li": -17, "iq": -11, "qu": 5, "ui": 3, "id": -11, "iu": -2, "um": 20}
 # Small optical width reductions, stronger in the lighter master. The already
 # matched wordmark bowls, shoulders, stems, and descenders keep their shapes.
@@ -477,7 +478,7 @@ def unicode_range(codepoints):
 def save_web(ttf):
     """Write the complete WOFF2 and its Latin core / extended split."""
     for suffix, codepoints in web_subsets(sorted(TTFont(ttf).getBestCmap())).items():
-        font = TTFont(ttf); options = subset.Options()
+        font = TTFont(ttf, recalcTimestamp=False); options = subset.Options()
         options.layout_features = options.name_IDs = options.name_languages = ["*"]
         options.notdef_outline = True; options.hinting = True
         subsetter = subset.Subsetter(options); subsetter.populate(unicodes=codepoints); subsetter.subset(font)
@@ -497,7 +498,7 @@ def fallback_css():
         scale = width / arial_width; os2 = font["OS/2"]
         percent = lambda value: f"{value / em / scale * 100:.2f}%"
         rules.append('@font-face {\n  font-family: "Satoma Sans Fallback";\n'
-            f'  src: local("{local}");\n  font-weight: {weights};\n  size-adjust: {scale * 100:.2f}%;\n'
+            f'  src: {local};\n  font-weight: {weights};\n  size-adjust: {scale * 100:.2f}%;\n'
             f'  ascent-override: {percent(os2.sTypoAscender)};\n  descent-override: {percent(-os2.sTypoDescender)};\n'
             f'  line-gap-override: {percent(os2.sTypoLineGap)};\n}}\n')
     return rules
@@ -520,13 +521,15 @@ def main():
     subsets = {suffix: unicode_range(points) for suffix, points in web_subsets(codepoints).items() if suffix}
     manifest["webSubsets"] = {suffix[1:]: ranges for suffix, ranges in subsets.items()}
     (OUT/"satoma-sans-manifest.json").write_text(json.dumps(manifest, indent=2)+"\n")
-    (OUT/"satoma-sans.css").write_text("\n".join(fallback_css() + [
-        '@font-face {\n  font-family: "Satoma Sans";\n'
+    face = lambda style, suffix, ranges: ('@font-face {\n  font-family: "Satoma Sans";\n'
         f'  src: url("./{style["fileStem"]}{suffix}.woff2?v={VERSION}") format("woff2");\n'
         f'  font-weight: {style["weight"]};\n  font-style: {"italic" if style["italic"] else "normal"};\n  font-display: swap;\n'
-        f'  unicode-range: {ranges};\n}}\n'
-        for style in styles for suffix, ranges in subsets.items()
-    ]))
+        + (f'  unicode-range: {ranges};\n' if ranges else "") + "}\n")
+    # Complete files keep every kerning pair. The split halves the usual download,
+    # but pairs that straddle the two files (e.g. "Tā") lose their kerning.
+    (OUT/"satoma-sans.css").write_text("\n".join(fallback_css() + [face(style, "", None) for style in styles]))
+    (OUT/"satoma-sans-split.css").write_text("\n".join(fallback_css() + [
+        face(style, suffix, ranges) for style in styles for suffix, ranges in subsets.items()]))
     for name in ("WEBAPP-USAGE.md", "SATOMA-PROVENANCE.md"):
         (OUT/name).write_bytes((REPO/"docs"/name).read_bytes())
     (OUT/"AUTHORS.md").write_bytes((REPO/"AUTHORS.md").read_bytes())

@@ -37,24 +37,21 @@ del { text-decoration-line: line-through; }
 
 ## Load it fast
 
-Each style comes as three WOFF2 files with identical outlines, spacing, kerning,
-and features:
+`satoma-sans.css` loads one complete WOFF2 per style (Regular is ~22 KB), with
+every kerning pair intact. Browsers download only the styles a page uses.
 
-| File | Contains | Regular size |
-| --- | --- | --- |
-| `satoma-sans-400-latin.woff2` | ASCII, Western European accents, punctuation, €, ™ | ~13 KB |
-| `satoma-sans-400-latin-ext.woff2` | Central/Eastern European and other accents, math symbols | ~11 KB |
-| `satoma-sans-400.woff2` | Everything, in one file | ~22 KB |
+For English-only interfaces, `satoma-sans-split.css` roughly halves that. Each
+style is split into a Latin core (ASCII, Western European accents,
+punctuation, €, ™; Regular ~13 KB) and an extended file (Central/Eastern
+European accents, math symbols) that browsers fetch only when a page contains
+one of its characters. The tradeoff: kerning between a core and an extended
+character side by side (for example "Tā" or "Łó") is not applied, because
+they come from different files. Text using only one half renders identically.
 
-`satoma-sans.css` uses the split files with `unicode-range`, so browsers download
-only the Latin core unless a page contains an extended character. Kerning
-between a core and an extended character is not applied, as with any split
-web font. Use the single-file WOFF2 if you write your own `@font-face` and
-prefer one request per style.
-
-`satoma-sans.css` also defines `"Satoma Sans Fallback"`: the local Arial,
-resized to Satoma's average width and line height. Put it second in
-`font-family` so text doesn't jump when Satoma finishes loading.
+Both stylesheets define `"Satoma Sans Fallback"`: the local Arial, resized to
+Satoma's average width and line height. Put it second in `font-family` to
+reduce layout shift when Satoma finishes loading. It is an approximation;
+individual lines can still rewrap.
 
 For the fastest first render:
 
@@ -63,9 +60,10 @@ For the fastest first render:
 - Put the `@font-face` rules in your main bundled CSS instead of a separate
   stylesheet. That removes one request from the HTML → CSS → font chain.
 - Preload only the one or two files used above the fold, typically regular:
-  `<link rel="preload" href="/fonts/satoma-sans-400-latin.woff2?v=0.303" as="font" type="font/woff2" crossorigin>`.
-  The `href` must match the CSS URL exactly, query string included, or the
-  font downloads twice.
+  `<link rel="preload" href="/fonts/satoma-sans-400.woff2?v=0.303" as="font" type="font/woff2" crossorigin>`
+  (or `satoma-sans-400-latin.woff2` with the split stylesheet). The `href`
+  must match the CSS URL exactly, query string included, or the font
+  downloads twice.
 - Because file names carry the version, cache them for a year:
   `Cache-Control: public, max-age=31536000, immutable`.
 - Use only the weights your design needs. Each one is a separate download.

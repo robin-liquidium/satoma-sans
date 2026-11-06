@@ -28,9 +28,9 @@ em { font-style: italic; }
 .balance { font-variant-numeric: tabular-nums; }
 ```
 
-The stylesheet loads a ~13 KB Latin file per style and fetches extended
-characters only when a page uses them. See the [webapp guide](docs/WEBAPP-USAGE.md)
-for preloading and caching.
+English-only apps can use `satoma-sans-split.css` instead, which loads a
+~13 KB Latin core per style. See the [webapp guide](docs/WEBAPP-USAGE.md) for
+the tradeoff, preloading, and caching.
 
 For desktop use, install the TTF files. Only load the weights/styles your app
 needs. Pin a release and upgrade intentionally; the website's latest download

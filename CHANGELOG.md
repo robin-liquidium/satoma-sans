@@ -2,14 +2,15 @@
 
 ## 0.303 — 2026-11-06
 
-- Web fonts are about half the size. `satoma-sans.css` now loads a ~13 KB Latin
-  core per style and fetches extended Latin and symbols only when a page uses
-  them. Outlines, spacing, kerning, and features are unchanged; the audit shapes
-  every character pair in every WOFF2 against the TTF to prove it.
-- WOFF2 files carry the standard OFL reference instead of the full license text
-  and drop glyph names. The single-file WOFF2 per style remains, about 13% smaller.
-- Added a metric-matched `"Satoma Sans Fallback"` (local Arial) so text doesn't
-  shift when the font finishes loading.
+- WOFF2 files are about 13% smaller: they carry the standard OFL reference
+  instead of the full license text and drop glyph names. Outlines, spacing,
+  kerning, and features are unchanged; the audit compares every glyph and
+  shapes every character pair in every WOFF2 against the TTF.
+- New opt-in `satoma-sans-split.css` for English-only apps: a ~13 KB Latin core
+  per style, with extended Latin and symbols fetched only when used. Kerning
+  between a core and an extended character is not applied.
+- Added a metric-matched `"Satoma Sans Fallback"` (local Arial) to reduce
+  layout shift while the font loads.
 - Raised lowercase t and its cedilla, caron, and comma-below forms to the
   700-unit cap/ascender height in all nine weights and their italics. Crossbars,
   terminals, and accent positions are preserved.
