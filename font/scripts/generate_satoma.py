@@ -13,7 +13,9 @@ import unicodedata
 import zipfile
 from pathlib import Path
 
+from fontTools import subset
 from fontTools.ttLib import TTFont
+from fontTools.ttLib.woff2 import WOFF2FlavorData
 from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 from fontTools.varLib.instancer import instantiateVariableFont
 
@@ -34,6 +36,23 @@ WEIGHTS = {100: ("Thin", 100), 200: ("ExtraLight", 180), 300: ("Light", 260),
 # These transform Albert's own outlines; no reference paths are imported.
 WIDTH_SCALE = {"L": 1.027, "m": .933, "n": .9665, "h": .9665, "u": 1.039}
 X_HEIGHT = 511
+# Browser files replace the embedded license text with the standard OFL reference;
+# the full text ships beside them as OFL.txt. Outlines, metrics, and OpenType
+# layout are byte-for-byte the desktop design.
+WEB_LICENSE = ("This Font Software is licensed under the SIL Open Font License, Version 1.1. "
+    "This license is available with a FAQ at: https://openfontlicense.org")
+# Characters almost every Latin page uses. The rest of the character set is a
+# second file that browsers fetch only when a page contains one of its characters.
+WEB_CORE = set(range(0x20, 0x100)) | set(range(0x2000, 0x2070)) | {
+    0x131, 0x152, 0x153, 0x2C6, 0x2DA, 0x2DC, 0x20AC, 0x2122, 0x2212}
+# Weighted English letter frequencies, for matching the fallback's text width.
+LETTER_FREQUENCY = {"a": 8.2, "b": 1.5, "c": 2.8, "d": 4.3, "e": 12.7, "f": 2.2, "g": 2.0,
+    "h": 6.1, "i": 7.0, "j": .15, "k": .77, "l": 4.0, "m": 2.4, "n": 6.7, "o": 7.5, "p": 1.9,
+    "q": .095, "r": 6.0, "s": 6.3, "t": 9.1, "u": 2.8, "v": .98, "w": 2.4, "x": .15, "y": 2.0,
+    "z": .074, " ": 18.0}
+# Arial's average em width with those frequencies (measured from the
+# metric-identical Liberation Sans), and the weights each fallback face covers.
+FALLBACKS = {400: ("Arial", .44704, "100 500"), 700: ("Arial Bold", .4841, "600 900")}
 BRAND_PAIRS = {"Li": -17, "iq": -11, "qu": 5, "ui": 3, "id": -11, "iu": -2, "um": 20}
 # Small optical width reductions, stronger in the lighter master. The already
 # matched wordmark bowls, shoulders, stems, and descenders keep their shapes.
@@ -435,11 +454,53 @@ def build(weight, style, source_weight, italic=False):
     if "STAT" in font: del font["STAT"]
     suffix = "-italic" if italic else ""
     font.save(OUT/f"satoma-sans-{weight}{suffix}.ttf")
-    font.flavor = "woff2"; font.save(OUT/f"satoma-sans-{weight}{suffix}.woff2")
+    save_web(OUT/f"satoma-sans-{weight}{suffix}.ttf")
     return {"weight": weight, "style": style, "sourceWeight": source_weight,
         "italic": italic, "fileStem": f"satoma-sans-{weight}{suffix}",
         "characters": len(font.getBestCmap()), "glyphs": len(font.getGlyphOrder()),
         "codepoints": sorted(font.getBestCmap()), "modifiedGlyphs": changed}
+
+
+def web_subsets(codepoints):
+    core = [c for c in codepoints if c in WEB_CORE]
+    return {"": codepoints, "-latin": core, "-latin-ext": [c for c in codepoints if c not in WEB_CORE]}
+
+
+def unicode_range(codepoints):
+    ranges = []
+    for c in codepoints:
+        if ranges and ranges[-1][1] == c - 1: ranges[-1][1] = c
+        else: ranges.append([c, c])
+    return ", ".join(f"U+{a:04X}" if a == b else f"U+{a:04X}-{b:04X}" for a, b in ranges)
+
+
+def save_web(ttf):
+    """Write the complete WOFF2 and its Latin core / extended split."""
+    for suffix, codepoints in web_subsets(sorted(TTFont(ttf).getBestCmap())).items():
+        font = TTFont(ttf); options = subset.Options()
+        options.layout_features = options.name_IDs = options.name_languages = ["*"]
+        options.notdef_outline = True; options.hinting = True
+        subsetter = subset.Subsetter(options); subsetter.populate(unicodes=codepoints); subsetter.subset(font)
+        for record in font["name"].names:
+            if record.nameID == 13: record.string = WEB_LICENSE
+        font["post"].formatType = 3.0  # glyph names are for font editors only
+        font.flavor = "woff2"; font.flavorData = WOFF2FlavorData(transformedTables=("glyf", "loca", "hmtx"))
+        font.save(ttf.with_name(ttf.stem + suffix + ".woff2"))
+
+
+def fallback_css():
+    """Size Arial to Satoma's width and line box so swapping fonts doesn't move text."""
+    rules = []
+    for weight, (local, arial_width, weights) in FALLBACKS.items():
+        font = TTFont(OUT/f"satoma-sans-{weight}.ttf"); cmap = font.getBestCmap(); em = font["head"].unitsPerEm
+        width = sum(font["hmtx"][cmap[ord(c)]][0] * f for c, f in LETTER_FREQUENCY.items()) / sum(LETTER_FREQUENCY.values()) / em
+        scale = width / arial_width; os2 = font["OS/2"]
+        percent = lambda value: f"{value / em / scale * 100:.2f}%"
+        rules.append('@font-face {\n  font-family: "Satoma Sans Fallback";\n'
+            f'  src: local("{local}");\n  font-weight: {weights};\n  size-adjust: {scale * 100:.2f}%;\n'
+            f'  ascent-override: {percent(os2.sTypoAscender)};\n  descent-override: {percent(-os2.sTypoDescender)};\n'
+            f'  line-gap-override: {percent(os2.sTypoLineGap)};\n}}\n')
+    return rules
 
 
 def main():
@@ -455,14 +516,17 @@ def main():
         "license": "SIL Open Font License 1.1", "upstreamCommit": UPSTREAM_COMMIT,
         "sourceSha256": SOURCE_SHA, "italicSourceSha256": ITALIC_SOURCE_SHA,
         "nativeTrackingAdjustmentEm": DEFAULT_TRACKING_EM, "codepoints": codepoints, "weights": weights, "styles": styles}
-    (OUT/"satoma-sans-manifest.json").write_text(json.dumps(manifest, indent=2)+"\n")
     (OUT/"satoma-sans-OFL.txt").write_bytes((REPO/"OFL.txt").read_bytes())
-    (OUT/"satoma-sans.css").write_text("\n".join(
+    subsets = {suffix: unicode_range(points) for suffix, points in web_subsets(codepoints).items() if suffix}
+    manifest["webSubsets"] = {suffix[1:]: ranges for suffix, ranges in subsets.items()}
+    (OUT/"satoma-sans-manifest.json").write_text(json.dumps(manifest, indent=2)+"\n")
+    (OUT/"satoma-sans.css").write_text("\n".join(fallback_css() + [
         '@font-face {\n  font-family: "Satoma Sans";\n'
-        f'  src: url("./{style["fileStem"]}.woff2?v={VERSION}") format("woff2");\n'
-        f'  font-weight: {style["weight"]};\n  font-style: {"italic" if style["italic"] else "normal"};\n  font-display: swap;\n}}\n'
-        for style in styles
-    ))
+        f'  src: url("./{style["fileStem"]}{suffix}.woff2?v={VERSION}") format("woff2");\n'
+        f'  font-weight: {style["weight"]};\n  font-style: {"italic" if style["italic"] else "normal"};\n  font-display: swap;\n'
+        f'  unicode-range: {ranges};\n}}\n'
+        for style in styles for suffix, ranges in subsets.items()
+    ]))
     for name in ("WEBAPP-USAGE.md", "SATOMA-PROVENANCE.md"):
         (OUT/name).write_bytes((REPO/"docs"/name).read_bytes())
     (OUT/"AUTHORS.md").write_bytes((REPO/"AUTHORS.md").read_bytes())

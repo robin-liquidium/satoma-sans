@@ -1,5 +1,5 @@
 :root {
-  font-family: "Satoma Sans", Arial, sans-serif;
+  font-family: "Satoma Sans", "Satoma Sans Fallback", sans-serif;
   font-size: 17px;
   line-height: 1.5;
   color: var(--fg);
