@@ -9,7 +9,7 @@ Copy the WOFF2 files, `satoma-sans.css`, and `OFL.txt` from this archive into
 your app's public fonts directory. Import the stylesheet or add:
 
 ```html
-<link rel="stylesheet" href="/fonts/satoma-sans.css" />
+<link rel="stylesheet" href="/fonts/satoma-sans.css?v=0.303" />
 ```
 
 ```css
@@ -64,8 +64,9 @@ For the fastest first render:
   (or `satoma-sans-400-latin.woff2` with the split stylesheet). The `href`
   must match the CSS URL exactly, query string included, or the font
   downloads twice.
-- Because file names carry the version, cache them for a year:
-  `Cache-Control: public, max-age=31536000, immutable`.
+- The stylesheet and font URLs carry the version (`?v=0.303`), so versioned
+  URLs can be cached for a year: `Cache-Control: public, max-age=31536000, immutable`.
+  Don't apply that to unversioned URLs, or upgrades stay hidden behind the cache.
 - Use only the weights your design needs. Each one is a separate download.
 
 ## Current coverage and limits
