@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.303 — 2026-11-06
 
 - Web fonts are about half the size. `satoma-sans.css` now loads a ~13 KB Latin
   core per style and fetches extended Latin and symbols only when a page uses

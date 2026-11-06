@@ -63,7 +63,7 @@ For the fastest first render:
 - Put the `@font-face` rules in your main bundled CSS instead of a separate
   stylesheet. That removes one request from the HTML → CSS → font chain.
 - Preload only the one or two files used above the fold, typically regular:
-  `<link rel="preload" href="/fonts/satoma-sans-400-latin.woff2?v=0.302" as="font" type="font/woff2" crossorigin>`.
+  `<link rel="preload" href="/fonts/satoma-sans-400-latin.woff2?v=0.303" as="font" type="font/woff2" crossorigin>`.
   The `href` must match the CSS URL exactly, query string included, or the
   font downloads twice.
 - Because file names carry the version, cache them for a year:

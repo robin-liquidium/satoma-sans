@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-100-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-100-latin.woff2?v=0.303") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -29,7 +29,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-100-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-100-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -38,7 +38,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-200-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-200-latin.woff2?v=0.303") format("woff2");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -47,7 +47,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-200-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-200-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -56,7 +56,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-300-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-300-latin.woff2?v=0.303") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -65,7 +65,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-300-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-300-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -74,7 +74,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-400-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-400-latin.woff2?v=0.303") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -83,7 +83,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-400-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-400-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -92,7 +92,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-500-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-500-latin.woff2?v=0.303") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -101,7 +101,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-500-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-500-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -110,7 +110,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-600-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-600-latin.woff2?v=0.303") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -119,7 +119,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-600-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-600-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -128,7 +128,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-700-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-700-latin.woff2?v=0.303") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -137,7 +137,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-700-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-700-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -146,7 +146,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-800-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-800-latin.woff2?v=0.303") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -155,7 +155,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-800-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-800-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -164,7 +164,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-900-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-900-latin.woff2?v=0.303") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -173,7 +173,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-900-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-900-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -182,7 +182,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-100-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-100-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
@@ -191,7 +191,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-100-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-100-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
@@ -200,7 +200,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-200-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-200-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 200;
   font-style: italic;
   font-display: swap;
@@ -209,7 +209,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-200-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-200-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 200;
   font-style: italic;
   font-display: swap;
@@ -218,7 +218,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-300-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-300-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
@@ -227,7 +227,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-300-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-300-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
@@ -236,7 +236,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-400-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-400-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -245,7 +245,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-400-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-400-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -254,7 +254,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-500-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-500-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -263,7 +263,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-500-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-500-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -272,7 +272,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-600-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-600-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -281,7 +281,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-600-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-600-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -290,7 +290,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-700-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-700-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -299,7 +299,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-700-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-700-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -308,7 +308,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-800-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-800-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 800;
   font-style: italic;
   font-display: swap;
@@ -317,7 +317,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-800-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-800-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 800;
   font-style: italic;
   font-display: swap;
@@ -326,7 +326,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-900-italic-latin.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-900-italic-latin.woff2?v=0.303") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -335,7 +335,7 @@
 
 @font-face {
   font-family: "Satoma Sans";
-  src: url("./satoma-sans-900-italic-latin-ext.woff2?v=0.302") format("woff2");
+  src: url("./satoma-sans-900-italic-latin-ext.woff2?v=0.303") format("woff2");
   font-weight: 900;
   font-style: italic;
   font-display: swap;

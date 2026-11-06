@@ -27,7 +27,7 @@ SOURCE_SHA = "8fe5d4cf5822d7096d4d17ad781c90f97c745ac13a22be619db74966fba45fda"
 ITALIC_SOURCE = SOURCE.with_name("AlbertSans-Italic.ttf")
 ITALIC_SOURCE_SHA = "16eb3291f7389045e90a00abb66a3d2bca1d03387b7ebbbc2b0cd9a094f86226"
 UPSTREAM_COMMIT = "fffdadf0f0c9cc1ec8b407063424a8bfbee05611"
-VERSION = "0.302"
+VERSION = "0.303"
 DEFAULT_TRACKING_EM = -0.025
 WEIGHTS = {100: ("Thin", 100), 200: ("ExtraLight", 180), 300: ("Light", 260),
            400: ("Regular", 350), 500: ("Medium", 475), 600: ("DemiBold", 590),
