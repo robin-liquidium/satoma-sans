@@ -12,7 +12,7 @@
     "dev": "pnpm prepare:website && pnpm --dir website dev --port 3002",
     "test:font": ".venv/bin/python font/scripts/audit_satoma_family.py",
     "test:website": "pnpm --dir website test",
-    "deploy": "pnpm --dir website exec wrangler deploy",
-    "deploy:check": "pnpm --dir website exec wrangler deploy --dry-run"
+    "deploy": "pnpm --dir website exec cf deploy --prebuilt --mode production --force",
+    "deploy:check": "pnpm --dir website exec cf deploy --prebuilt --mode production --dry-run"
   }
 }
