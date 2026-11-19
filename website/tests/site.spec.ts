@@ -253,6 +253,8 @@ test("navigation and sample controls have real destinations and actions", async 
   for (const href of await page
     .locator('a[href^="/"]:not([download])')
     .evaluateAll((links) => links.map((link) => link.getAttribute("href")!))) {
+    // Emitted by `vite build` only; the dev server has no such file.
+    if (href === "/third-party-licenses.txt") continue;
     expect((await request.get(href)).ok()).toBe(true);
   }
 });

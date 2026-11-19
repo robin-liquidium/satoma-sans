@@ -2,6 +2,7 @@
 ignorePatterns = [
   "dist",
   ".wrangler",
+  ".cloudflare",
   "test-results",
   "worker-configuration.d.ts",
   "public/fonts",
@@ -13,6 +14,7 @@ maxWarnings = 0
 ignorePatterns = [
   "dist",
   ".wrangler",
+  ".cloudflare",
   "test-results",
   "worker-configuration.d.ts",
   "public/fonts",

@@ -3,7 +3,6 @@ node_modules/
 __pycache__/
 *.pyc
 .DS_Store
-.wrangler/
 .env
 .env.*
 .dev.vars*
@@ -16,3 +15,4 @@ website/worker-configuration.d.ts
 font/dist/*.zip
 font/proofs/
 font/reports/
+.wrangler/

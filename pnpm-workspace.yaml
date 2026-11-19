@@ -6,3 +6,10 @@ allowBuilds:
   webgpu: true
   esbuild: true
   workerd: true
+minimumReleaseAgeExclude:
+  - cf@1.0.0-rc.2
+  - '@cloudflare/build-output-utils@1.0.0-rc.2'
+  - '@cloudflare/config@1.0.0-rc.2'
+  - '@cloudflare/runtime-types@0.1.31'
+  - '@cloudflare/vite-plugin@2.0.0-rc.2'
+  - miniflare@5.20261118.0-beta

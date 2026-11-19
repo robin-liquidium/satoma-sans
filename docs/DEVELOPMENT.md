@@ -9,8 +9,9 @@ the pinned font dependencies in `.venv`, and `pnpm install --frozen-lockfile`.
 - `pnpm test:font` audits all 18 styles, outlines/metrics parity, dot sizes, shaping, and pair clearances.
 - `pnpm dev` starts the local specimen at http://127.0.0.1:3002.
 - In another terminal, `pnpm --dir website exec playwright install chromium` then `pnpm test:website` runs browser tests.
-- `pnpm deploy:check` validates the Worker deployment without publishing.
-- `pnpm deploy` is a manual recovery deployment, not the normal release path.
+- `pnpm --dir website build` type-checks and runs `cf build`, which writes the deploy bundle to `website/.cloudflare/output`.
+- `pnpm deploy:check` validates that build with `cf deploy --dry-run` without publishing (run `pnpm build` first).
+- `pnpm deploy` runs `cf deploy --prebuilt --mode production --force` on the existing build. It is what Workers Builds runs, and doubles as a manual recovery deployment.
 
 `font/dist/` is generated but committed (except ZIPs) so consumers can use
 the fonts without Python. After editing font sources or scripts, rebuild and
@@ -25,7 +26,7 @@ install `font/requirements.txt`, and run `python font/scripts/generate_satoma.py
 
 The public GitHub repository is `robin-liquidium/satoma-sans`. Cloudflare Workers
 Builds watches **main** and builds/deploys Worker `satoma-sans` in Robin's account.
-The custom domain is declared in `website/wrangler.jsonc` as `satoma.robin.build`.
+The custom domain is declared in `website/cloudflare.config.ts` as `satoma.robin.build`.
 Cloudflare manages the build token; no Cloudflare credentials belong in Git.
 
 Build command: `pnpm setup:font && pnpm build && pnpm test:font`.
