@@ -1,6 +1,7 @@
 [fmt]
 ignorePatterns = [
   "dist",
+  ".wrangler",
   ".cloudflare",
   "test-results",
   "worker-configuration.d.ts",
@@ -12,6 +13,7 @@ typeAware = true
 maxWarnings = 0
 ignorePatterns = [
   "dist",
+  ".wrangler",
   ".cloudflare",
   "test-results",
   "worker-configuration.d.ts",
